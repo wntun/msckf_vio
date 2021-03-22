@@ -57,5 +57,8 @@
 
     </node>
   </group>
+  
+  <node pkg="rosbag" type="play" name="player" output="log" args="--clock /root/slam_dataset/V1_01_easy.bag"/>
+  <node pkg="rosbag" type="record" name="rosbag_record_vio_odom" args="record -O odom /firefly_sbx/vio/odom"/>
 
 </launch>
