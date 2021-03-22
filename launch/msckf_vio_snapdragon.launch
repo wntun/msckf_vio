@@ -5,6 +5,7 @@
   <arg name="fixed_frame_id" default="world"/>
   <arg name="calibration_file"
     default="$(find msckf_vio)/config/camchain-imucam-snapdragon.yaml"/>
+  <arg name="slam_file" default="/root/slam_dataset/indoor_forward_3_snapdragon_with_gt.bag"/>
 
   <!-- Image Processor Nodelet  -->
   <include file="$(find msckf_vio)/launch/image_processor_snapdragon.launch">
@@ -29,9 +30,9 @@
       <param name="max_cam_state_size" value="20"/>
       <param name="position_std_threshold" value="8.0"/>
 
-      <param name="rotation_threshold" value="0.2618"/>
-      <param name="translation_threshold" value="0.4"/>
-      <param name="tracking_rate_threshold" value="0.5"/>
+      <param name="rotation_threshold" value="0.1"/>
+      <param name="translation_threshold" value="0.1"/>
+      <param name="tracking_rate_threshold" value="0.7"/>
 
       <!-- Feature optimization config -->
       <param name="feature/config/translation_threshold" value="-1.0"/>
@@ -46,16 +47,6 @@
       <param name="initial_state/velocity/x" value="0.0"/>
       <param name="initial_state/velocity/y" value="0.0"/>
       <param name="initial_state/velocity/z" value="0.0"/>
-<!-- 
-      <param name="initial_state/position/x" value="0.0"/>
-      <param name="initial_state/position/y" value="0.0"/>
-      <param name="initial_state/position/z" value="0.0"/>
-
-      <param name="initial_state/orientation/x" value="0.0"/>
-      <param name="initial_state/orientation/y" value="0.0"/>
-      <param name="initial_state/orientation/z" value="0.0"/>
-      <param name="initial_state/orientation/w" value="0.0"/> -->
-<!-- -->
 	
       <param name="initial_state/position/x" value="7.63211066542"/>
       <param name="initial_state/position/y" value="0.178475997002"/>
@@ -79,5 +70,8 @@
 
     </node>
   </group>
+	
+  <node pkg="rosbag" type="play" name="player" output="log" args="--clock $(arg slam_file)"/>
+  <node pkg="rosbag" type="record" name="rosbag_record_vio_odom" args="record -O odom /firefly_sbx/vio/odom"/>
 
 </launch>
